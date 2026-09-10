@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_usb_serial_manager/modals/usb_device.dart';
 
 import 'flutter_usb_serial_manager_platform_interface.dart';
 
@@ -9,11 +10,11 @@ class MethodChannelFlutterUsbSerialManager extends FlutterUsbSerialManagerPlatfo
   @visibleForTesting
   final methodChannel = const MethodChannel('flutter_usb_serial_manager');
 
+
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>(
-      'getPlatformVersion',
-    );
-    return version;
+  Future<List<UsbDevice>> getDeviceList() async {
+    final deviceList = await methodChannel.invokeMethod<List<dynamic>>('getDeviceList');
+    return deviceList?.map((device) => UsbDevice.fromMap(device)).toList() ?? [];
   }
+
 }
