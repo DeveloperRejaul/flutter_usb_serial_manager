@@ -1,3 +1,10 @@
+## 0.0.4
+
+* Test release: verify pub.dev publishing succeeds now that the release
+  tag is pushed with a personal access token (`RELEASE_TOKEN`), producing
+  a genuine tag-ref-triggered run for pub.dev's trusted-publisher check.
+  No functional changes since 0.0.1.
+
 ## 0.0.3
 
 * Fix the release pipeline: the tag → publish steps now run in a single
