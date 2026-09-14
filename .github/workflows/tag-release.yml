@@ -1,10 +1,14 @@
 name: Tag release
 
 # Whenever pubspec.yaml's `version:` changes on main, this creates the
-# matching git tag (vX.Y.Z) and a GitHub Release. Release notes combine the
-# CHANGELOG.md section for that version with GitHub's auto-generated
-# commit/PR summary. Pushing the tag triggers .github/workflows/publish.yml,
-# which publishes the release to pub.dev.
+# matching git tag (vX.Y.Z) and a GitHub Release, then publishes to pub.dev.
+#
+# The tag + publish steps live in one workflow (instead of the tag push
+# triggering a separate publish.yml) because a push made with the default
+# GITHUB_TOKEN does NOT trigger other workflow runs — that's a deliberate
+# GitHub Actions anti-loop restriction, not a bug. publish.yml is kept
+# around separately for the case where a human pushes a vX.Y.Z tag by hand
+# (that push uses their own credentials, which does trigger it normally).
 #
 # Can also be run manually from the Actions tab (workflow_dispatch).
 
@@ -21,6 +25,9 @@ permissions:
 jobs:
   tag:
     runs-on: ubuntu-latest
+    outputs:
+      created: ${{ steps.check.outputs.exists == 'false' }}
+      tag: ${{ steps.version.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -74,3 +81,10 @@ jobs:
           name: ${{ steps.version.outputs.tag }}
           body_path: release_notes.md
           generate_release_notes: true
+
+  publish:
+    needs: tag
+    if: needs.tag.outputs.created == 'true'
+    permissions:
+      id-token: write # required for pub.dev OIDC authentication
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
