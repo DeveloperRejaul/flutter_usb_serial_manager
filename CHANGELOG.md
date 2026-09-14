@@ -1,3 +1,10 @@
+## 0.0.7
+
+* Test release: retry after fixing RELEASE_TOKEN's repository access and
+  Contents permission (v0.0.6's tag push failed with "Permission to
+  ... denied", i.e. the token existed but wasn't scoped correctly). No
+  functional changes since 0.0.1.
+
 ## 0.0.6
 
 * Test release: `actions/checkout` was persisting a credential for the
