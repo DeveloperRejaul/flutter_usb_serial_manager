@@ -1,3 +1,11 @@
+## 0.0.5
+
+* Test release: fix `publish.yml`'s tag filter. GitHub Actions tag filters
+  are glob patterns, not regex — a bare `+` outside `+(...)` is literal,
+  so the old `v[0-9]+.[0-9]+.[0-9]+*` pattern only matched tags containing
+  a literal "+" and never actually fired (confirmed: v0.0.4's tag push did
+  not trigger it). Now `v*.*.*`. No functional changes since 0.0.1.
+
 ## 0.0.4
 
 * Test release: verify pub.dev publishing succeeds now that the release

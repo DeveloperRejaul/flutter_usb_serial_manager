@@ -15,7 +15,13 @@ name: Publish to pub.dev
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+*'
+      # GitHub Actions tag filters are glob patterns, not regex — a bare
+      # `+` outside `+(...)` is a literal character, so `[0-9]+` here would
+      # only match tags containing a literal "+" and never actually fire
+      # (confirmed by a live test: v0.0.4 didn't trigger this workflow).
+      # `v*.*.*` is looser but reliably matches the vX.Y.Z tags
+      # tag-release.yml creates.
+      - 'v*.*.*'
 
 jobs:
   publish:
