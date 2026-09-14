@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Declares that this app talks to USB devices in host mode.
+         required="false" so it still installs on devices without USB host support. -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
     <application
         android:label="flutter_usb_serial_manager_example"
         android:name="${applicationName}"
@@ -24,6 +27,15 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- Lets Android launch this app straight into MainActivity when a
+                 matching USB device is plugged in, instead of only being usable
+                 after opening the app first. -->
+            <intent-filter>
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Empty <usb-device/> matches every USB device — fine for a test app.
+     Narrow this to your real device's vendor-id/product-id for production. -->
+<resources>
+    <usb-device />
+</resources>

@@ -1,22 +1,20 @@
 import 'dart:convert';
 
-
 class UsbDevice {
-  final String vendorId;
+  final int vendorId;
   final int productId;
-  final int manufacturer;
-  UsbDevice({
+  final String? manufacturer;
+
+  const UsbDevice({
     required this.vendorId,
     required this.productId,
-    required this.manufacturer,
+    this.manufacturer,
   });
-  
-
 
   UsbDevice copyWith({
-    String? vendorId,
+    int? vendorId,
     int? productId,
-    int? manufacturer,
+    String? manufacturer,
   }) {
     return UsbDevice(
       vendorId: vendorId ?? this.vendorId,
@@ -26,38 +24,38 @@ class UsbDevice {
   }
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-  
-    result.addAll({'vendorId': vendorId});
-    result.addAll({'productId': productId});
-    result.addAll({'manufacturer': manufacturer});
-  
-    return result;
+    return <String, dynamic>{
+      'vendorId': vendorId,
+      'productId': productId,
+      'manufacturer': manufacturer,
+    };
   }
 
   factory UsbDevice.fromMap(Map<String, dynamic> map) {
     return UsbDevice(
-      vendorId: map['vendorId'] ?? '',
-      productId: map['productId']?.toInt() ?? 0,
-      manufacturer: map['manufacturer']?.toInt() ?? 0,
+      vendorId: (map['vendorId'] as num?)?.toInt() ?? 0,
+      productId: (map['productId'] as num?)?.toInt() ?? 0,
+      manufacturer: map['manufacturer'] as String?,
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory UsbDevice.fromJson(String source) => UsbDevice.fromMap(json.decode(source));
+  factory UsbDevice.fromJson(String source) =>
+      UsbDevice.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
-  String toString() => 'UsbDevice(vendorId: $vendorId, productId: $productId, manufacturer: $manufacturer)';
+  String toString() =>
+      'UsbDevice(vendorId: $vendorId, productId: $productId, manufacturer: $manufacturer)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is UsbDevice &&
-      other.vendorId == vendorId &&
-      other.productId == productId &&
-      other.manufacturer == manufacturer;
+        other.vendorId == vendorId &&
+        other.productId == productId &&
+        other.manufacturer == manufacturer;
   }
 
   @override
