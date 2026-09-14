@@ -329,7 +329,13 @@ Releases are automated with two GitHub Actions workflows:
 
 To cut a release: bump `version:` in `pubspec.yaml`, add a matching section to `CHANGELOG.md`, and merge to `main` — the rest happens automatically.
 
-**One-time setup required before this works:** on [pub.dev](https://pub.dev), configure this GitHub repository and the `publish.yml` workflow as a **trusted publisher** for the `flutter_usb_serial_manager` package (Package admin → Automated publishing, or `Account → Publishing` if the name isn't claimed yet) — see the [automated publishing guide](https://dart.dev/tools/pub/automated-publishing). Only the pub.dev package owner can do this.
+**One-time setup required before this works** (pub.dev only lets you automate publishing for a package that already exists there):
+
+1. Publish the first version manually, once: `flutter pub publish` from the repo root.
+2. Go to **[pub.dev/packages/flutter_usb_serial_manager/admin](https://pub.dev/packages/flutter_usb_serial_manager/admin) → Automated publishing** and add this GitHub repository (`DeveloperRejaul/flutter_usb_serial_manager`) with workflow file `publish.yml` as a **trusted publisher**. See the [automated publishing guide](https://dart.dev/tools/pub/automated-publishing) for details.
+3. From then on, every version bump merged to `main` is tagged, released, and published automatically — no more manual `pub publish`.
+
+Only the pub.dev package owner (signed in with the Google account used for step 1) can do steps 1–2.
 
 ## Contributing
 
