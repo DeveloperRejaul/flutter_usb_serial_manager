@@ -31,6 +31,7 @@ Whether you're building a USB serial terminal, a Modbus RTU sensor dashboard, a 
 - [Example app](#example-app)
 - [Troubleshooting / FAQ](#troubleshooting--faq)
 - [Roadmap](#roadmap)
+- [Releasing](#releasing)
 - [Contributing](#contributing)
 - [License](#license)
 - [Credits](#credits)
@@ -319,9 +320,28 @@ See the [Android setup](#2-android-setup-required) note about JitPack and `depen
 
 iOS support is not on the roadmap — see [Supported platforms](#supported-platforms) for why.
 
+## Releasing
+
+Releases are automated with two GitHub Actions workflows:
+
+1. **[`tag-release.yml`](.github/workflows/tag-release.yml)** — triggers whenever `version:` in `pubspec.yaml` changes on `main`. It creates the matching `vX.Y.Z` git tag and a GitHub Release, using the matching `CHANGELOG.md` section plus GitHub's auto-generated commit/PR notes as the release body.
+2. **[`publish.yml`](.github/workflows/publish.yml)** — triggers on that `vX.Y.Z` tag push and publishes to pub.dev via pub.dev's official OIDC ["trusted publishing"](https://dart.dev/tools/pub/automated-publishing) reusable workflow, so no long-lived pub.dev credentials are stored in this repo.
+
+To cut a release: bump `version:` in `pubspec.yaml`, add a matching section to `CHANGELOG.md`, and merge to `main` — the rest happens automatically.
+
+**One-time setup required before this works:**
+
+- On [pub.dev](https://pub.dev), configure this GitHub repository and the `publish.yml` workflow as a **trusted publisher** for the `flutter_usb_serial_manager` package (Package admin → Automated publishing, or `Account → Publishing` if the name isn't claimed yet) — see the [automated publishing guide](https://dart.dev/tools/pub/automated-publishing). Only the pub.dev package owner can do this.
+- Add a real license to the [`LICENSE`](LICENSE) file — pub.dev scores and displays it, and it's currently a placeholder.
+
 ## Contributing
 
-Issues and pull requests are welcome. Please run `flutter analyze` and, where applicable, add or update tests before opening a PR.
+Issues and pull requests are welcome — bug reports, docs fixes, tests, and new features all help.
+
+- Read the [Contributing guide](CONTRIBUTING.md) for the development setup, project structure, coding style, commit message convention, and the pull request checklist.
+- This project follows a [Code of Conduct](CODE_OF_CONDUCT.md); please be kind and respectful in issues, PRs, and discussions.
+- Found a bug? Use the [bug report template](.github/ISSUE_TEMPLATE/bug_report.yml). Have an idea? Use the [feature request template](.github/ISSUE_TEMPLATE/feature_request.yml).
+- Every pull request runs against the checklist in [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) — `flutter analyze` must pass, and native changes need to be verified on a real device via the [example app](#example-app).
 
 ## License
 

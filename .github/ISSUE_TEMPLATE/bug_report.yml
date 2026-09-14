@@ -1,0 +1,65 @@
+name: Bug report
+description: Something isn't working as expected.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill in as much detail as you can — USB issues are very hardware-specific, so the details matter.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: A clear description of the bug, and what you expected to happen instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps (or a code snippet) that reproduce the issue.
+      placeholder: |
+        1. Call getDeviceList()
+        2. Call connect(device, baudRate: 9600)
+        3. ...
+    validations:
+      required: true
+
+  - type: input
+    id: plugin-version
+    attributes:
+      label: flutter_usb_serial_manager version
+      placeholder: "0.0.1"
+    validations:
+      required: true
+
+  - type: input
+    id: flutter-version
+    attributes:
+      label: Flutter / Dart version
+      description: Output of `flutter --version`.
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Android device & OS version
+      placeholder: "Samsung Galaxy A52, Android 14"
+    validations:
+      required: true
+
+  - type: input
+    id: usb-device
+    attributes:
+      label: USB device (vendor/product ID, if known)
+      description: From `UsbDevice.vendorId` / `UsbDevice.productId` via `getDeviceList()`, if possible.
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Paste any relevant `adb logcat` output or Dart stack trace.
+      render: shell

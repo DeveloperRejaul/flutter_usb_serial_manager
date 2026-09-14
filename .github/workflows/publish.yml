@@ -1,0 +1,24 @@
+name: Publish to pub.dev
+
+# Fires when .github/workflows/tag-release.yml pushes a vX.Y.Z tag (or when
+# a tag is pushed manually). Uses pub.dev's official OIDC "trusted
+# publishing" reusable workflow, so no long-lived pub.dev credentials are
+# stored in this repo.
+#
+# One-time setup required on pub.dev before this can succeed — see
+# https://dart.dev/tools/pub/automated-publishing and the note in
+# CONTRIBUTING/README about configuring this repo + workflow as a trusted
+# publisher for the flutter_usb_serial_manager package.
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+*'
+
+jobs:
+  publish:
+    permissions:
+      id-token: write # required for pub.dev OIDC authentication
+    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    # with:
+    #   working-directory: . # uncomment and set if pubspec.yaml isn't at the repo root
