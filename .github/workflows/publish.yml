@@ -1,9 +1,11 @@
 name: Publish to pub.dev
 
-# Fires when .github/workflows/tag-release.yml pushes a vX.Y.Z tag (or when
-# a tag is pushed manually). Uses pub.dev's official OIDC "trusted
-# publishing" reusable workflow, so no long-lived pub.dev credentials are
-# stored in this repo.
+# Fires on a real vX.Y.Z tag push — whether pushed by a human, or by
+# .github/workflows/tag-release.yml (which authenticates with a personal
+# access token specifically so this workflow actually fires; a tag pushed
+# with the default GITHUB_TOKEN would not trigger this). Uses pub.dev's
+# official OIDC "trusted publishing" reusable workflow, so no long-lived
+# pub.dev credentials are stored in this repo.
 #
 # One-time setup required on pub.dev before this can succeed — see
 # https://dart.dev/tools/pub/automated-publishing and the note in

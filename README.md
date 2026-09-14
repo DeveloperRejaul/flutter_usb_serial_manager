@@ -333,9 +333,10 @@ To cut a release: bump `version:` in `pubspec.yaml`, add a matching section to `
 
 1. Publish the first version manually, once: `flutter pub publish` from the repo root.
 2. Go to **[pub.dev/packages/flutter_usb_serial_manager/admin](https://pub.dev/packages/flutter_usb_serial_manager/admin) → Automated publishing** and add this GitHub repository (`DeveloperRejaul/flutter_usb_serial_manager`) with workflow file `publish.yml` as a **trusted publisher**. See the [automated publishing guide](https://dart.dev/tools/pub/automated-publishing) for details.
-3. From then on, every version bump merged to `main` is tagged, released, and published automatically — no more manual `pub publish`.
+3. Create a fine-grained [personal access token](https://github.com/settings/personal-access-tokens/new) scoped to just this repository with **Contents: Read and write** permission, and add it as a repository secret named `RELEASE_TOKEN` (repo **Settings → Secrets and variables → Actions → New repository secret**). This is required because `tag-release.yml` needs to push the release tag with *your* credentials, not GitHub's default token — a tag pushed with the default token doesn't trigger `publish.yml` at all, and pub.dev's trusted-publisher check also validates that the publish run really started from a `refs/tags/vX.Y.Z` push.
+4. From then on, every version bump merged to `main` is tagged, released, and published automatically — no more manual `pub publish`.
 
-Only the pub.dev package owner (signed in with the Google account used for step 1) can do steps 1–2.
+Only the pub.dev package owner (signed in with the Google account used for step 1) can do steps 1–2; only someone with admin access to the GitHub repo can do step 3.
 
 ## Contributing
 

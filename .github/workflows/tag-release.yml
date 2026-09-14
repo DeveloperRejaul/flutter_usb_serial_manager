@@ -1,14 +1,28 @@
 name: Tag release
 
 # Whenever pubspec.yaml's `version:` changes on main, this creates the
-# matching git tag (vX.Y.Z) and a GitHub Release, then publishes to pub.dev.
+# matching git tag (vX.Y.Z) and a GitHub Release. Pushing that tag then
+# triggers .github/workflows/publish.yml, which publishes to pub.dev.
 #
-# The tag + publish steps live in one workflow (instead of the tag push
-# triggering a separate publish.yml) because a push made with the default
-# GITHUB_TOKEN does NOT trigger other workflow runs — that's a deliberate
-# GitHub Actions anti-loop restriction, not a bug. publish.yml is kept
-# around separately for the case where a human pushes a vX.Y.Z tag by hand
-# (that push uses their own credentials, which does trigger it normally).
+# The tag push below authenticates with a personal access token
+# (secrets.RELEASE_TOKEN), NOT the default GITHUB_TOKEN. This matters for
+# two separate reasons:
+#   1. A push made with the default GITHUB_TOKEN does not trigger other
+#      workflow runs at all (GitHub's anti-loop restriction) — publish.yml
+#      would simply never fire.
+#   2. Even if it did fire (e.g. by calling the publish workflow directly
+#      from a job here), that job would run in the context of this
+#      workflow's *branch* push event, not a real tag-ref event. pub.dev's
+#      trusted-publisher "tag pattern" check validates the actual ref the
+#      triggering run started from, so it rejects anything that isn't a
+#      genuine refs/tags/vX.Y.Z-triggered run.
+# A PAT-authenticated push produces a real, independent tag-push event
+# with the correct ref, satisfying both.
+#
+# One-time setup: add a fine-grained personal access token scoped to this
+# repository only, with "Contents: Read and write" permission, as the
+# repository secret RELEASE_TOKEN (Settings -> Secrets and variables ->
+# Actions). See README -> Releasing for the full one-time setup checklist.
 #
 # Can also be run manually from the Actions tab (workflow_dispatch).
 
@@ -25,9 +39,6 @@ permissions:
 jobs:
   tag:
     runs-on: ubuntu-latest
-    outputs:
-      created: ${{ steps.check.outputs.exists == 'false' }}
-      tag: ${{ steps.version.outputs.tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -65,13 +76,19 @@ jobs:
             echo "_No CHANGELOG.md entry found for ${{ steps.version.outputs.version }}._" > release_notes.md
           fi
 
-      - name: Create and push tag
+      - name: Create and push tag (using RELEASE_TOKEN so it triggers publish.yml)
         if: steps.check.outputs.exists == 'false'
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
         run: |
+          if [ -z "$RELEASE_TOKEN" ]; then
+            echo "::error::secrets.RELEASE_TOKEN is not set. Add a fine-grained PAT with 'Contents: Read and write' on this repo as the RELEASE_TOKEN secret (see README -> Releasing), otherwise this tag push will not trigger publish.yml."
+            exit 1
+          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git tag -a "${{ steps.version.outputs.tag }}" -m "Release ${{ steps.version.outputs.tag }}"
-          git push origin "${{ steps.version.outputs.tag }}"
+          git push "https://x-access-token:${RELEASE_TOKEN}@github.com/${{ github.repository }}.git" "${{ steps.version.outputs.tag }}"
 
       - name: Create GitHub release
         if: steps.check.outputs.exists == 'false'
@@ -81,10 +98,3 @@ jobs:
           name: ${{ steps.version.outputs.tag }}
           body_path: release_notes.md
           generate_release_notes: true
-
-  publish:
-    needs: tag
-    if: needs.tag.outputs.created == 'true'
-    permissions:
-      id-token: write # required for pub.dev OIDC authentication
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
