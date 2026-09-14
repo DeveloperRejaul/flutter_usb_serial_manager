@@ -1,3 +1,9 @@
+## 0.0.2
+
+* Test release to verify the automated tag → GitHub Release → pub.dev
+  publish pipeline (GitHub Actions + pub.dev trusted publishing) end to end.
+  No functional changes since 0.0.1.
+
 ## 0.0.1
 
 * Initial release (Android only).
