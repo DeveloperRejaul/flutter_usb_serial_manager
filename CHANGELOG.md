@@ -1,3 +1,12 @@
+## 0.0.6
+
+* Test release: `actions/checkout` was persisting a credential for the
+  default `GITHUB_TOKEN` that conflicted with the `RELEASE_TOKEN` used to
+  push the release tag — the push "succeeded" but GitHub still treated it
+  as `GITHUB_TOKEN`-authenticated and never triggered `publish.yml`
+  (confirmed: v0.0.5's tag push triggered zero downstream runs). Fixed
+  with `persist-credentials: false`. No functional changes since 0.0.1.
+
 ## 0.0.5
 
 * Test release: fix `publish.yml`'s tag filter. GitHub Actions tag filters
