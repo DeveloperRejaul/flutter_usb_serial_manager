@@ -34,7 +34,7 @@ This Code of Conduct applies within all community spaces (issues, pull requests,
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening a [GitHub issue](https://github.com/DeveloperRejaul/flutter_usb_serial_manager/issues) or, for sensitive reports, by contacting the maintainer directly through their GitHub profile. All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening a [GitHub issue](https://github.com/DeveloperRejaul/flutter_usb_serial_manager/issues) or, for sensitive reports, by emailing the maintainer at **devrejaul.official@gmail.com**. All complaints will be reviewed and investigated promptly and fairly.
 
 ## Attribution
 

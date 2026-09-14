@@ -3,7 +3,7 @@
 [![pub package](https://img.shields.io/pub/v/flutter_usb_serial_manager.svg)](https://pub.dev/packages/flutter_usb_serial_manager)
 [![platform](https://img.shields.io/badge/platform-Android%20only-3DDC84?logo=android&logoColor=white)](#supported-platforms)
 [![style: flutter_lints](https://img.shields.io/badge/style-flutter__lints-blueviolet)](https://pub.dev/packages/flutter_lints)
-[![license](https://img.shields.io/badge/license-see%20LICENSE-lightgrey)](LICENSE)
+[![license](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](LICENSE)
 
 > 🤖 **Android only.** This plugin wraps Android's native USB Host API and does not support iOS, web, or desktop — see [Supported platforms](#supported-platforms).
 
@@ -329,10 +329,7 @@ Releases are automated with two GitHub Actions workflows:
 
 To cut a release: bump `version:` in `pubspec.yaml`, add a matching section to `CHANGELOG.md`, and merge to `main` — the rest happens automatically.
 
-**One-time setup required before this works:**
-
-- On [pub.dev](https://pub.dev), configure this GitHub repository and the `publish.yml` workflow as a **trusted publisher** for the `flutter_usb_serial_manager` package (Package admin → Automated publishing, or `Account → Publishing` if the name isn't claimed yet) — see the [automated publishing guide](https://dart.dev/tools/pub/automated-publishing). Only the pub.dev package owner can do this.
-- Add a real license to the [`LICENSE`](LICENSE) file — pub.dev scores and displays it, and it's currently a placeholder.
+**One-time setup required before this works:** on [pub.dev](https://pub.dev), configure this GitHub repository and the `publish.yml` workflow as a **trusted publisher** for the `flutter_usb_serial_manager` package (Package admin → Automated publishing, or `Account → Publishing` if the name isn't claimed yet) — see the [automated publishing guide](https://dart.dev/tools/pub/automated-publishing). Only the pub.dev package owner can do this.
 
 ## Contributing
 
@@ -345,7 +342,23 @@ Issues and pull requests are welcome — bug reports, docs fixes, tests, and new
 
 ## License
 
-See the [LICENSE](LICENSE) file for details.
+Licensed under the [Apache License, Version 2.0](LICENSE).
+
+```
+Copyright 2026 Rezaul Karim
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
 
 ## Credits
 
